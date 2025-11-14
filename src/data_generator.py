@@ -156,7 +156,10 @@ def generate_sample_telecom_data(n_samples=5000, output_path=None):
 
 if __name__ == "__main__":
     # Generate sample data
-    output_file = "../data/raw/telecom_churn_data.csv"
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    output_file = os.path.join(project_root, "data", "raw", "telecom_churn_data.csv")
     df = generate_sample_telecom_data(n_samples=5000, output_path=output_file)
     
     print("\nDataset Info:")

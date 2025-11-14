@@ -48,6 +48,10 @@ def predict_churn(data_path, model_path):
         customer_ids = np.arange(len(df))
         df_processed = df.copy()
     
+    # Remove target column if present (for prediction on training data)
+    if 'Churn' in df_processed.columns:
+        df_processed = df_processed.drop('Churn', axis=1)
+    
     # Identify categorical columns
     categorical_cols = df_processed.select_dtypes(include=['object']).columns.tolist()
     
