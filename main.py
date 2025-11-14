@@ -171,19 +171,23 @@ class ChurnPredictionPipeline:
             else:
                 values = shap_values[0]
             
+            # Ensure values is 1D array
+            if values.ndim > 1:
+                values = values.flatten()
+            
             # Top features
-            feature_importance = dict(zip(
-                self.preprocessor.feature_names,
-                values
-            ))
+            feature_importance = []
+            for fname, val in zip(self.preprocessor.feature_names, values):
+                feature_importance.append((fname, float(val)))
+            
             sorted_features = sorted(
-                feature_importance.items(),
+                feature_importance,
                 key=lambda x: abs(x[1]),
                 reverse=True
             )[:5]
             
             result['top_features'] = [
-                {'feature': f, 'shap_value': float(v)}
+                {'feature': f, 'shap_value': v}
                 for f, v in sorted_features
             ]
         
